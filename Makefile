@@ -1,14 +1,11 @@
 build:
 	mpicxx -fopenmp -c main.c -o main.o
 	mpicxx -fopenmp -c cFunctions.c -o cFunctions.o
-	nvcc -I./inc -c cudaFunctions.cu -o cudaFunctions.o
-	mpicxx -fopenmp -o mpiCudaOpemMP  main.o cFunctions.o cudaFunctions.o  /usr/local/cuda/lib64/libcudart_static.a -ldl -lrt
+	mpicxx -fopenmp -o main main.o cFunctions.o
 
 clean:
-	rm -f *.o ./mpiCudaOpemMP
+	rm -f *.o ./main
+	rm -f output.txt
 
 run:
-	mpiexec -np 2 ./mpiCudaOpemMP
-
-runOn2:
-	mpiexec -np 2 -machinefile  mf  -map-by  node  ./mpiCudaOpemMP
+	mpiexec -np 2 ./main
